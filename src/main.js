@@ -2,11 +2,13 @@ import './style.css'
 import javascriptLogo from './javascript.svg'
 import viteLogo from '/vite.svg'
 import { setupCounter } from './counter.js'
+import { TextBoxComponent } from './TextBoxComponent.js';
 
 document.querySelector('#app').innerHTML = `
   <div>
-    </a>
     <h1>H</h1>
+    <div id="text-box-container">
+    </div>
     <div>
       <button></button>
     </div>
@@ -16,3 +18,6 @@ document.querySelector('#app').innerHTML = `
 `
 
 setupCounter(document.querySelector('#counter'))
+
+const textBox = new TextBoxComponent();
+document.querySelector('#text-box-container').appendChild(textBox.getElement());
