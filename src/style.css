@@ -38,7 +38,13 @@ h1 {
 }
 
 #text-box-container {
-  margin-top: 1.5em;
+  margin: 0 10px;
+}
+
+#text-box-container input {
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
 }
 
 button {
