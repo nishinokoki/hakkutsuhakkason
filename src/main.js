@@ -21,7 +21,7 @@ document.querySelector('#app').innerHTML = `
 
 // キャラクター画像を表示
 const character = new CharacterMoveComponent(document.querySelector('#app'));
-character.showCharacter('./assets/coach_upbody.png', {
+character.showCharacter('/assets/coach_upbody.png', {
   width: 781/2 + 781/3,
   height: 633/2 + 633/3,
   anchor: 'topleft'
