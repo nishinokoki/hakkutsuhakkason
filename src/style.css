@@ -127,8 +127,10 @@ select#question-select:focus {
   position: absolute;
   left: 20px;
   top: 20px;
-  pointer-events: none;
+  pointer-events: auto;
   will-change: transform;
+  cursor: pointer;
+  transition: box-shadow 0.3s ease,filter 0.3s ease;
   /* 必要なら初期サイズやレスポンシブ指定を追加 */
   /* width: 128px; */
   /* height: auto; */

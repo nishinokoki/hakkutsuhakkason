@@ -70,8 +70,7 @@ export class CharacterMoveComponent {
       if (this.originalPosition && this.imgElement) {
         this.imgElement.style.left = `${this.originalPosition.x}px`;
         this.imgElement.style.top = `${this.originalPosition.y}px`;
-        console.log('実行したよ');
       }
     }
-  }
+  } 
 }

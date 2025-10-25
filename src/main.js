@@ -35,10 +35,11 @@ container.appendChild(answerBox.getElement());
 const textBox = new TextBoxComponent();
 container.appendChild(textBox.getElement());
 
+const delay = (ms) => new Promise(resolve => setTimeout(resolve, ms));
 const sendButton = new SendButtonComponent(textBox, (answer, data) => {
-    answerBox.setValueAnimated(answer, 100);
+    answerBox.setValueAnimated(answer, 50);
     character.startShaking();
-    delay(answer.length * 1).then(() => {
+    delay(answer.length * 50).then(() => {
       character.stopShaking();
     });
 });
