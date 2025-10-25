@@ -1,5 +1,5 @@
 :root {
-  font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
+  font-family: sans-serif, Avenir, Helvetica, Arial, sans-serif;
   line-height: 1.5;
   font-weight: 400;
 
@@ -20,7 +20,7 @@ body {
   min-width: 320px;
   min-height: 100vh;
   /* 背景画像を追加 */
-  background-image: linear-gradient(rgba(255,255,255,0.7), rgba(255,255,255,0.7)), url('./assets/kabegami.png');
+  background-image: linear-gradient(rgba(255,255,255,0), rgba(255,255,255,0)), url('./assets/kabegami_3.jpg');
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
@@ -38,6 +38,21 @@ h1 {
   padding: 2rem;
   text-align: center;
 } */
+
+p {
+  position: fixed;
+  left: 325px;
+  bottom: 400px;
+  width: auto;
+  margin: 0;
+  padding: 5px;
+  border-radius: 4px;
+  background-color: rgb(255, 255, 255);
+  color: #000000;
+  font-size: 1.7em;
+  font-family: serif;
+  z-index: 10000;
+}
 
 .read-the-docs {
   color: #888;
@@ -79,6 +94,7 @@ h1 {
   box-sizing: border-box;
   padding: 12px;
   font-size: 1rem;
+  line-height: 1.5;
   border-radius: 6px;
   border: 1px solid #ccc;
   background: #969593; 
@@ -134,6 +150,18 @@ select#question-select:focus {
   /* 必要なら初期サイズやレスポンシブ指定を追加 */
   /* width: 128px; */
   /* height: auto; */
+}
+
+#assist-video{
+  position: fixed;
+  right: 180px;
+  bottom: 325px;
+  width: 500px;
+  height: 250px;
+  border: 2px solid #ccc; 
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  z-index: 10001;
 }
 
 @media (prefers-color-scheme: light) {

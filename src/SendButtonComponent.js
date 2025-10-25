@@ -1,3 +1,5 @@
+import React, { useState, useEffect } from "react";
+
 export class SendButtonComponent {
   constructor(textBox, onSuccess = null) {
     this.textBox = textBox;
@@ -40,7 +42,7 @@ export class SendButtonComponent {
         : (this.textBox.getTextarea ? (this.textBox.getTextarea()?.value || '') : '');
 
         console.log('送信メッセージ:', message);
-      const response = await fetch('https://fastapi-render-3-fz7f.onrender.com/api/answer', {
+      const response = await fetch('https://fastapi-render-gemini-6.onrender.com/api/answer', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({"text": message })
@@ -51,9 +53,30 @@ export class SendButtonComponent {
         throw new Error('送信に失敗しました');
       }
 
-
       const data = await response.json();
-      if (this.onSuccess) this.onSuccess(data.answer, data); // ← ここで main に渡す
+      
+      try { 
+        // Node.jsのfsモジュールを使ってファイル保存
+            const fs = window.require('fs').promises;
+            const path = window.require('path');
+            // ファイル名生成
+            const filename = `character_voice.mp3`;
+            const filepath = path.join(src, filename);
+            
+            // Base64デコードして保存
+            const audioBuffer = Buffer.from(data.audio.data, 'base64');
+            await fs.writeFile(filepath, audioBuffer);
+            
+            console.log(`✅ Audio saved: ${filepath}`);
+            console.log(`📁 File size: ${audioBuffer.length} bytes`);
+            
+            return filepath;
+        } catch (error) {
+            console.error('Failed to save audio:', error);
+            throw error;
+        }
+
+      if (this.onSuccess) this.onSuccess(data.answer, data,data.video_url,data.video_start); // ← ここで main に渡す
     } catch (error) {
       console.error('エラーが発生しました:', error);
     }
