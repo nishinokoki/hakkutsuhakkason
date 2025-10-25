@@ -180,6 +180,41 @@ select#question-select:focus {
   z-index: 10001;
 }
 
+/* ローディング表示 */
+#loading-indicator {
+  position: fixed;
+  left: 150px;
+  bottom: 320px;
+  background: rgba(255, 255, 255, 0.95);
+  color: #333;
+  padding: 15px 25px;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+  font-size: 1.1rem;
+  z-index: 10002;
+  display: none;
+  align-items: center;
+  gap: 10px;
+}
+
+#loading-indicator.show {
+  display: flex;
+}
+
+.loading-spinner {
+  width: 20px;
+  height: 20px;
+  border: 3px solid #f3f3f3;
+  border-top: 3px solid #646cff;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
 @media (prefers-color-scheme: light) {
   :root {
     color: #213547;

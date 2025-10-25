@@ -14,6 +14,10 @@ document.querySelector('#app').innerHTML = `
     <div id="controls" />
     <div id="text-box" />
     <div id="answer-box" />
+    <div id="loading-indicator">
+      <div class="loading-spinner"></div>
+      <span>考え中...</span>
+    </div>
     // <div id="send-button2" />
     <p>AI監督</p>
   </div>
@@ -82,16 +86,39 @@ const sendButton2 = new SendButtonComponent(textBox, 1.2, sendButtonElement);
 // ボタンクリックで送信
 sendButtonElement.addEventListener('click', async () => {
   console.log('送信ボタンがクリックされました');
-  const result = await sendButton2.send();
+  
+  // 動画をリセット
+  movie.stop();
+  
+  // ローディング表示を開始
+  const loadingIndicator = document.querySelector('#loading-indicator');
+  loadingIndicator.classList.add('show');
+  
+  // ボタンを無効化
+  sendButtonElement.disabled = true;
+  sendButtonElement.style.opacity = '0.6';
+  sendButtonElement.style.cursor = 'not-allowed';
+  
+  try {
+    const result = await sendButton2.send();
 
-  if (result) {
-    const { answer, video_url, video_start, voice_length } = result;
-    answerBox.setValueAnimated(answer,100);
-    character.startShaking();
-    delay(answer.length * 100).then(() => {
-      character.stopShaking();
-      movie.play(video_url,video_start);
-    });
+    if (result) {
+      const { answer, video_url, video_start, voice_length } = result;
+      answerBox.setValueAnimated(answer,100);
+      character.startShaking();
+      delay(answer.length * 100).then(() => {
+        character.stopShaking();
+        movie.play(video_url,video_start);
+      });
+    }
+  } finally {
+    // ローディング表示を終了
+    loadingIndicator.classList.remove('show');
+    
+    // ボタンを再度有効化
+    sendButtonElement.disabled = false;
+    sendButtonElement.style.opacity = '1';
+    sendButtonElement.style.cursor = 'pointer';
   }
 });
 
