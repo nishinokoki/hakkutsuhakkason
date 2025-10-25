@@ -118,7 +118,23 @@ p {
   color: #fff;
   cursor: pointer;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
-}
+} 
+
+/* #send-button2 {
+  position: fixed;
+  right: 20px; 
+  border-radius: 8px;
+  border: 1px solid transparent;
+  bottom: 10px;
+  padding: 8px;
+  width: 100px;
+  font-size: 1.1em;
+  text-align: center;
+  background-color: #1a1a1a;
+  color: #fff;
+  cursor: pointer;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+} */
 
 select#question-select {
   position: absolute;

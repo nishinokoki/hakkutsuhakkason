@@ -10,28 +10,24 @@ import { CharacterVoiceComponent } from './CharacterVoiceComponent.js';
 document.querySelector('#app').innerHTML = `
   <div>
     <h1></h1>
-    <div id="now-loading">
-    </div>
-    <div id="controls">
-    </div>
-    <div id="text-box">
-    </div>
-    <div id="answer-box">
-    </div>
+    <div id="now-loading" />
+    <div id="controls" />
+    <div id="text-box" />
+    <div id="answer-box" />
+    // <div id="send-button2" />
     <p>AI監督</p>
   </div>
 `;
 
+
 // キャラクター画像を表示
 const character = new CharacterMoveComponent(document.querySelector('#app'));
-character.showCharacter('./assets/coach_upbody.png', {
+character.showCharacter('./assets/coach_smile.png', {
   width: 781/2 + 781/3,
   height: 633/2 + 633/3,
   anchor: 'topleft'
 });
 character.setPosition(-100, 0);  // 表示位置を設定
-
-const voice = new CharacterVoiceComponent();
 
 
 const container = document.querySelector('#text-box');
@@ -59,15 +55,62 @@ new QuestionSelectorComponent(questions, (value) => {
   if (ta) ta.focus();
 }, '#controls');
 
-
 const delay = (ms) => new Promise(resolve => setTimeout(resolve, ms));
-const sendButton = new SendButtonComponent(textBox, (answer, data,video_url,video_start) => {
-    answerBox.setValueAnimated(answer, 50);
+// document.querySelector('#send-button2').innerHTML = `送信`;
+// document.querySelector('#send-button2').element = `button`;
+
+// const sendButton2 = new SendButtonComponent(textBox, 1.3, document.querySelector('#send-button2'), (answer, video_url, video_start, voice_length) => {
+  // buuton 要素を作成
+  const sendButtonElement = document.createElement('button');
+  sendButtonElement.id = 'send-button';
+  sendButtonElement.type = 'button';
+  sendButtonElement.textContent = '送信';
+
+  // SendButtonComponent に button要素を渡す
+//   const sendButton2 = new SendButtonComponent(textBox, 1.3, sendButtonElement, (answer, video_url, video_start, voice_length) => {
+//   const x = voice_length / answer.length;
+//     answerBox.setValueAnimated(answer,90);
+//     character.startShaking();
+//     delay(answer.length * 90).then(() => {
+//       character.stopShaking();
+//       movie.play(video_url,video_start);
+//     });
+// });
+
+const sendButton2 = new SendButtonComponent(textBox, 1.2, sendButtonElement);
+// イベントリスナーをmain.jsで管理
+// ボタンクリックで送信
+sendButtonElement.addEventListener('click', async () => {
+  console.log('送信ボタンがクリックされました');
+  const result = await sendButton2.send();
+
+  if (result) {
+    const { answer, video_url, video_start, voice_length } = result;
+    answerBox.setValueAnimated(answer,100);
     character.startShaking();
-    voice.play('./assets/sample.mp3');
-    delay(answer.length * 50).then(() => {
+    delay(answer.length * 100).then(() => {
       character.stopShaking();
       movie.play(video_url,video_start);
     });
+  }
 });
-container.appendChild(sendButton.getElement());
+
+// Enter キーで送信
+// document.addEventListener('keydown', (event) => {
+//   if (event.key === 'Enter' && !event.repeat) {
+//     event.preventDefault();
+//     console.log('Enterキーが押されました');
+//     sendButton2.send();
+//   }
+// });
+
+// const sendButton = new SendButtonComponent(textBox, 1.3, (answer, video_url,video_start,voice_length) => {
+//   const x = voice_length / answer.length;
+//     answerBox.setValueAnimated(answer,90);
+//     character.startShaking();
+//     delay(answer.length * 90).then(() => {
+//       character.stopShaking();
+//       movie.play(video_url,video_start);
+//     });
+// });
+document.querySelector('#send-button2').appendChild(sendButtonElement);
