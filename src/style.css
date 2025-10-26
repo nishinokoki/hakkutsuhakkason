@@ -20,7 +20,7 @@ body {
   min-width: 320px;
   min-height: 100vh;
   /* 背景画像を追加 */
-  background-image: linear-gradient(rgba(255,255,255,0), rgba(255,255,255,0)), url('./assets/kabegami_3.jpg');
+  background-image: linear-gradient(rgba(255,255,255,0), rgba(255,255,255,0)), url('/assets/kabegami_3.jpg');
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
