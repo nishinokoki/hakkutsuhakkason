@@ -35,11 +35,10 @@ container.appendChild(movie.getElement());
 
 // Question selector を controls にマウントし、選択時に textarea に反映
 const questions = [
-  "オフサイドとは何ですか？",
-  "ギラヴァンツ北九州の一番有名なプレイヤーは誰ですか？",
-  "スローインの正しい投げ方を教えてください。",
-  "PKの成功率を挙げるコツは何ですか？",
-  "PKってなんですか？"
+  "",
+  "PKってなに？相手に決められたときどう思います？",
+  "コーナーキックってなに？相手に決められた際にどう思いますか？",
+  "サッカーのサポーターってどんなことをするんですか？",
 ];
 
 new QuestionSelectorComponent(questions, (value) => {
@@ -92,17 +91,18 @@ sendButtonElement.addEventListener('click', async () => {
     const result = await sendButton2.send();
 
     if (result) {
-      const { answer, video_url, video_start, voice_length, fel_id
+      const { answer, video_url, video_start, voice_length, fel_id2
       } = result;
+      console.log('fel_id2:', fel_id2);
 
-      if (fel_id !== undefined) {
-        character.showCharacter(cha_list[fel_id], cha_position[fel_id]);
-        character.setPosition(-100, 0);  // 表示位置を設定
+      if (fel_id2 !== undefined) {
+        character.showCharacter(cha_list[fel_id],cha_list[fel_id2], cha_position[fel_id],cha_position[fel_id2]);
+        fel_id = fel_id2;
       }
 
-      answerBox.setValueAnimated(answer, 100);
+      answerBox.setValueAnimated(answer, 90);
       character.startShaking();
-      delay(answer.length * 100).then(() => {
+      delay(answer.length * 90).then(() => {
         character.stopShaking();
         movie.play(video_url, video_start);
       });
@@ -118,21 +118,26 @@ sendButtonElement.addEventListener('click', async () => {
   }
 });
 
-const cha_list = ['./assets/coach_upbody.png', './assets/coach_smile.png', './assets/coach_anger_special.png', './assets/coach_enjoy.png', './assets/coach_sad_special.png'];
+const cha_list = ['./assets/coach_upbody.png', 
+                  './assets/coach_smile.png', 
+                  './assets/coach_anger_special.png', 
+                  './assets/coach_sad_special.png',
+                  './assets/coach_enjoy.png', 
+                  ];
 const cha_size = 1024 / 1.8;
 const cha_position = [
-  { width: 781 / 2 + 781 / 3, height: 633 / 2 + 633 / 3, position: (-100, 0) },// upbody
-  { width: cha_size, height: cha_size, position: (-55, 0) }, // smile
-  { width: cha_size, height: cha_size, position: (-35, 0) }, // anger_special
-  { width: cha_size, height: cha_size, position: (-100, 0) }, // enjoy
-  { width: cha_size, height: cha_size, position: (-30, 0) } //sad_special
+  { width: 781 / 2 + 781 / 3, height: 633 / 2 + 633 / 3, position: {x: -100, y: 0} },// upbody
+  { width: cha_size, height: cha_size, position: {x: -55, y: 0} }, // smile
+  { width: cha_size, height: cha_size, position: {x: -35, y: 0} }, // anger_special
+  { width: cha_size, height: cha_size, position: {x: -30, y: 0} }, // sad_special
+  { width: cha_size, height: cha_size, position: {x: -10, y: 0} } //enjoy
 ];
 
 // キャラクター画像を表示
 const character = new CharacterMoveComponent(document.querySelector('#app'));
 let fel_id = 0;
-character.showCharacter(cha_list[fel_id], cha_position[fel_id]);
-character.setPosition(-100, 0);
+character.showCharacter(cha_list[fel_id],null, cha_position[fel_id]);
+character.setPosition(-90, 0);
 // Enter キーで送信
 // document.addEventListener('keydown', (event) => {
 //   if (event.key === 'Enter' && !event.repeat) {

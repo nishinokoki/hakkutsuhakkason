@@ -13,21 +13,97 @@ export class CharacterMoveComponent {
   }
 
   // PNGなど画像のURLを受け取って画面に表示する
-  showCharacter(src, options = {}) {
+  showCharacter(src, src2, options = {}, options2 = {}) {
+    // src2がない場合は通常の画像切り替え
+    if (!src2) {
+      if (!this.imgElement) {
+        this.imgElement = document.createElement('img');
+        this.imgElement.className = 'character-image';
+        this.container.appendChild(this.imgElement);
+      }
+      this.imgElement.src = src;
+      console.log('Character image source set to:', src);
+      if (options.width) {
+        this.imgElement.style.width = typeof options.width === 'number' ? `${options.width}px` : options.width;
+      }
+      if (options.height) {
+        this.imgElement.style.height = typeof options.height === 'number' ? `${options.height}px` : options.height;
+      }
+      if (options.position) {
+        this.position = options.position;
+        this.setPosition(this.position.x, this.position.y);
+      }
+      return;
+    }
+
+    // src2がある場合はフェード切り替え
     if (!this.imgElement) {
+      // 初回は新しい画像を直接表示
       this.imgElement = document.createElement('img');
       this.imgElement.className = 'character-image';
+      this.imgElement.src = src2;
       this.container.appendChild(this.imgElement);
+
+      // options2を適用
+      if (options2.width) {
+        this.imgElement.style.width = typeof options2.width === 'number' ? `${options2.width}px` : options2.width;
+      }
+      if (options2.height) {
+        this.imgElement.style.height = typeof options2.height === 'number' ? `${options2.height}px` : options2.height;
+      }
+      if (options2.position) {
+        this.position = options2.position;
+        this.setPosition(this.position.x, this.position.y);
+      }
+    } else {
+      // 既存の画像がある場合はフェード切り替え
+      const oldImg = this.imgElement;
+      const newImg = document.createElement('img');
+      newImg.className = 'character-image';
+      newImg.src = src2;
+
+      // 新しい画像にoptions2を適用
+      if (options2.width) {
+        newImg.style.width = typeof options2.width === 'number' ? `${options2.width}px` : options2.width;
+      }
+      if (options2.height) {
+        newImg.style.height = typeof options2.height === 'number' ? `${options2.height}px` : options2.height;
+      }
+
+      // 新しい位置を設定
+      if (options2.position) {
+        this.position = options2.position;
+        newImg.style.left = `${this.position.x}px`;
+        newImg.style.top = `${this.position.y}px`;
+      } else {
+        newImg.style.left = oldImg.style.left;
+        newImg.style.top = oldImg.style.top;
+      }
+
+      newImg.style.opacity = '0';
+      newImg.style.transition = 'opacity 0.5s ease-in-out';
+
+      this.container.appendChild(newImg);
+
+      // フェードアニメーション開始
+      requestAnimationFrame(() => {
+        oldImg.style.transition = 'opacity 0.75s ease-in-out';
+        oldImg.style.opacity = '0';
+        newImg.style.opacity = '1';
+      });
+
+      // アニメーション終了後に古い画像を削除
+      setTimeout(() => {
+        if (oldImg.parentNode) {
+          oldImg.parentNode.removeChild(oldImg);
+        }
+        this.imgElement = newImg;
+      }, 500);
+
+      this.imgElement = newImg;
     }
-    this.imgElement.src = src;
-    console.log('Character image source set to:', src);
-    if (options.width) {
-      this.imgElement.style.width = typeof options.width === 'number' ? `${options.width}px` : options.width;
-    }
-    if (options.height) {
-      this.imgElement.style.height = typeof options.height === 'number' ? `${options.height}px` : options.height;
-    }
-    if (options.position) this.position = options.position;
+
+    console.log('Character image transitioning from:', src, 'to:', src2);
   }
 
   setPosition(x, y) {
@@ -72,5 +148,5 @@ export class CharacterMoveComponent {
         this.imgElement.style.top = `${this.originalPosition.y}px`;
       }
     }
-  } 
+  }
 }
