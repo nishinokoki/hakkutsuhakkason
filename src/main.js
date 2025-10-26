@@ -18,20 +18,9 @@ document.querySelector('#app').innerHTML = `
       <div class="loading-spinner"></div>
       <span>考え中...</span>
     </div>
-    // <div id="send-button2" />
-    <p>AI監督</p>
+    <div id="send-button2"></div>
   </div>
 `;
-
-
-// キャラクター画像を表示
-const character = new CharacterMoveComponent(document.querySelector('#app'));
-character.showCharacter('./assets/coach_smile.png', {
-  width: 781/2 + 781/3,
-  height: 633/2 + 633/3,
-  anchor: 'topleft'
-});
-character.setPosition(-100, 0);  // 表示位置を設定
 
 
 const container = document.querySelector('#text-box');
@@ -64,13 +53,13 @@ const delay = (ms) => new Promise(resolve => setTimeout(resolve, ms));
 // document.querySelector('#send-button2').element = `button`;
 
 // const sendButton2 = new SendButtonComponent(textBox, 1.3, document.querySelector('#send-button2'), (answer, video_url, video_start, voice_length) => {
-  // buuton 要素を作成
-  const sendButtonElement = document.createElement('button');
-  sendButtonElement.id = 'send-button';
-  sendButtonElement.type = 'button';
-  sendButtonElement.textContent = '送信';
+// buuton 要素を作成
+const sendButtonElement = document.createElement('button');
+sendButtonElement.id = 'send-button';
+sendButtonElement.type = 'button';
+sendButtonElement.textContent = '送信';
 
-  // SendButtonComponent に button要素を渡す
+// SendButtonComponent に button要素を渡す
 //   const sendButton2 = new SendButtonComponent(textBox, 1.3, sendButtonElement, (answer, video_url, video_start, voice_length) => {
 //   const x = voice_length / answer.length;
 //     answerBox.setValueAnimated(answer,90);
@@ -86,35 +75,42 @@ const sendButton2 = new SendButtonComponent(textBox, 1.2, sendButtonElement);
 // ボタンクリックで送信
 sendButtonElement.addEventListener('click', async () => {
   console.log('送信ボタンがクリックされました');
-  
+
   // 動画をリセット
   movie.stop();
-  
+
   // ローディング表示を開始
   const loadingIndicator = document.querySelector('#loading-indicator');
   loadingIndicator.classList.add('show');
-  
+
   // ボタンを無効化
   sendButtonElement.disabled = true;
   sendButtonElement.style.opacity = '0.6';
   sendButtonElement.style.cursor = 'not-allowed';
-  
+
   try {
     const result = await sendButton2.send();
 
     if (result) {
-      const { answer, video_url, video_start, voice_length } = result;
-      answerBox.setValueAnimated(answer,100);
+      const { answer, video_url, video_start, voice_length, fel_id
+      } = result;
+
+      if (fel_id !== undefined) {
+        character.showCharacter(cha_list[fel_id], cha_position[fel_id]);
+        character.setPosition(-100, 0);  // 表示位置を設定
+      }
+
+      answerBox.setValueAnimated(answer, 100);
       character.startShaking();
       delay(answer.length * 100).then(() => {
         character.stopShaking();
-        movie.play(video_url,video_start);
+        movie.play(video_url, video_start);
       });
     }
   } finally {
     // ローディング表示を終了
     loadingIndicator.classList.remove('show');
-    
+
     // ボタンを再度有効化
     sendButtonElement.disabled = false;
     sendButtonElement.style.opacity = '1';
@@ -122,6 +118,21 @@ sendButtonElement.addEventListener('click', async () => {
   }
 });
 
+const cha_list = ['./assets/coach_upbody.png', './assets/coach_smile.png', './assets/coach_anger_special.png', './assets/coach_enjoy.png', './assets/coach_sad_special.png'];
+const cha_size = 1024 / 1.8;
+const cha_position = [
+  { width: 781 / 2 + 781 / 3, height: 633 / 2 + 633 / 3, position: (-100, 0) },// upbody
+  { width: cha_size, height: cha_size, position: (-55, 0) }, // smile
+  { width: cha_size, height: cha_size, position: (-35, 0) }, // anger_special
+  { width: cha_size, height: cha_size, position: (-100, 0) }, // enjoy
+  { width: cha_size, height: cha_size, position: (-30, 0) } //sad_special
+];
+
+// キャラクター画像を表示
+const character = new CharacterMoveComponent(document.querySelector('#app'));
+let fel_id = 0;
+character.showCharacter(cha_list[fel_id], cha_position[fel_id]);
+character.setPosition(-100, 0);
 // Enter キーで送信
 // document.addEventListener('keydown', (event) => {
 //   if (event.key === 'Enter' && !event.repeat) {

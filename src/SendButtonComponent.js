@@ -41,7 +41,7 @@ export class SendButtonComponent {
         : (this.textBox.getTextarea ? (this.textBox.getTextarea()?.value || '') : '');
 
       console.log('送信メッセージ:', message);
-      const response = await fetch('https://fastapi-render-gemini-10.onrender.com/api/answer', {
+      const response = await fetch('https://fastapi-render-gemini-11.onrender.com/api/answer', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ "text": message, "include_audio": true, "speed": this.speed })
@@ -80,7 +80,8 @@ export class SendButtonComponent {
         answer: data.answer,
         video_url: data.video_url,
         video_start: data.video_start,
-        voice_length: data.audio.length
+        voice_length: data.audio.length,
+        cha_key: data.feeling_id
       };
   } catch(error) {
     console.error('エラーが発生しました:', error);

@@ -27,7 +27,7 @@ export class CharacterMoveComponent {
     if (options.height) {
       this.imgElement.style.height = typeof options.height === 'number' ? `${options.height}px` : options.height;
     }
-    if (options.anchor) this.anchor = options.anchor;
+    if (options.position) this.position = options.position;
   }
 
   setPosition(x, y) {

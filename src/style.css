@@ -63,7 +63,7 @@ p {
   left: 20px;
   bottom: 65px;
   width: calc(100% - 40px);
-  height: 90px;
+  height: 110px;
   box-sizing: border-box;
   margin: 0;
   z-index: 999;
@@ -82,7 +82,7 @@ p {
 #answer-box {
   position: fixed;
   right: 20px;
-  bottom: 160px;  /* text-box より上に配置（値を大きくするとさらに上に） */
+  bottom: 190px;  /* text-box より上に配置（値を大きくするとさらに上に） */
   height: 150px;
   width: 60%;
   box-sizing: border-box;
@@ -170,8 +170,8 @@ select#question-select:focus {
 
 #assist-video{
   position: fixed;
-  right: 180px;
-  bottom: 325px;
+  right: 170px;
+  bottom: 355px;
   width: 500px;
   height: 250px;
   border: 2px solid #ccc; 
