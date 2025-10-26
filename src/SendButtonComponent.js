@@ -44,7 +44,7 @@ export class SendButtonComponent {
       const response = await fetch('https://fastapi-render-gemini-14.onrender.com/api/answer', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ "text": message, "include_audio": true, "speed": this.speed, "actor": "dori" })
+        body: JSON.stringify({ "text": message, "include_audio": true, "speed": this.speed})
       });
 
 

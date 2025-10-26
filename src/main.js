@@ -35,7 +35,7 @@ container.appendChild(movie.getElement());
 
 // Question selector を controls にマウントし、選択時に textarea に反映
 const questions = [
-  "ミドルシュートとロングシュートの違いってなんですか？",
+  "昨日ギラヴァンツ北九州が勝ってましたね！自己紹介お願いします！",
   "PKってなに？相手に決められたときどう思います？",
   "コーナーキックってなに？相手に決められた際にどう思いますか？",
   "サッカーのサポーターってどんなことをするんですか？",
