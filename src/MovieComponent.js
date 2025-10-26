@@ -59,7 +59,10 @@ export class MovieComponent {
     return this.iframeElement;
   }
 
-  stop() {
+  stop() {  
+
+
     this.iframeElement.src = '';
+    
   }
 }
