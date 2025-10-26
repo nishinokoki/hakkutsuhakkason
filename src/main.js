@@ -35,7 +35,7 @@ container.appendChild(movie.getElement());
 
 // Question selector を controls にマウントし、選択時に textarea に反映
 const questions = [
-  "",
+  "ミドルシュートとロングシュートの違いってなんですか？",
   "PKってなに？相手に決められたときどう思います？",
   "コーナーキックってなに？相手に決められた際にどう思いますか？",
   "サッカーのサポーターってどんなことをするんですか？",
@@ -69,7 +69,7 @@ sendButtonElement.textContent = '送信';
 //     });
 // });
 
-const sendButton2 = new SendButtonComponent(textBox, 1.2, sendButtonElement);
+const sendButton2 = new SendButtonComponent(textBox, 1.0, sendButtonElement);
 // イベントリスナーをmain.jsで管理
 // ボタンクリックで送信
 sendButtonElement.addEventListener('click', async () => {
@@ -100,9 +100,9 @@ sendButtonElement.addEventListener('click', async () => {
         fel_id = fel_id2;
       }
 
-      answerBox.setValueAnimated(answer, 90);
+      answerBox.setValueAnimated(answer, 120);
       character.startShaking();
-      delay(answer.length * 90).then(() => {
+      delay(answer.length * 120).then(() => {
         character.stopShaking();
         movie.play(video_url, video_start);
       });

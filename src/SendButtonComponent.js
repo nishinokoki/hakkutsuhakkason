@@ -41,7 +41,7 @@ export class SendButtonComponent {
         : (this.textBox.getTextarea ? (this.textBox.getTextarea()?.value || '') : '');
 
       console.log('送信メッセージ:', message);
-      const response = await fetch('https://fastapi-render-gemini-13.onrender.com/api/answer', {
+      const response = await fetch('https://fastapi-render-gemini-14.onrender.com/api/answer', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ "text": message, "include_audio": true, "speed": this.speed, "actor": "dori" })
