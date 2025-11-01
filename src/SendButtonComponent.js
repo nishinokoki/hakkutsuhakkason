@@ -1,101 +1,70 @@
-// import React, { useState, useEffect } from "react";
-// import fs from 'fs/promises';
-// import path from 'path';
+import { ApiService, AudioUtils } from './services/apiService.js';
+import { ensureAudioContext } from './utils/helpers.js';
 
+/**
+ * 送信ボタンコンポーネント
+ * テキストボックスの内容をAPIに送信し、音声を再生
+ */
 export class SendButtonComponent {
-  constructor(textBox, speed = 1.0, buttonelement) {
+  constructor(textBox, speed = 1.0, buttonElement) {
     this.textBox = textBox;
     this.speed = speed;
-    // this.element = document.createElement('button');
-    // this.element.type = 'button';
-    this.element = buttonelement;
+    this.element = buttonElement;
     this.audioCtx = null;
-    // this.render();
-    // イベントリスナーの設定は外部で行うため、ここでは呼ばない
-    // this.setupEventLitener();
   }
 
-  ensureAudioContext() {
-    if (!this.audioCtx) {
-      const AC = window.AudioContext || window.webkitAudioContext;
-      this.audioCtx = new AC();
-    }
-    if (this.audioCtx.state === 'suspended') {
-      this.audioCtx.resume();
-    }
-    return this.audioCtx;
-  }
-
-  // render() {
-  //   this.element.id = 'send-button';
-  //   // this.element.textContent = `送信`;
-  // }
+  /**
+   * 要素を取得
+   * @returns {HTMLElement}
+   */
   getElement() {
     return this.element;
   }
 
+  /**
+   * メッセージを送信
+   * @returns {Promise<Object|null>} APIレスポンス
+   */
   async send() {
     try {
-      const message = (typeof this.textBox.getValue === 'function')
-        ? this.textBox.getValue()
-        : (this.textBox.getTextarea ? (this.textBox.getTextarea()?.value || '') : '');
-
+      // テキストボックスから値を取得
+      const message = this.getTextBoxValue();
       console.log('送信メッセージ:', message);
-      const response = await fetch('https://fastapi-render-gemini-14.onrender.com/api/answer', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ "text": message, "include_audio": true, "speed": this.speed})
-      });
 
+      // API送信
+      const data = await ApiService.sendQuestion(message, this.speed);
 
-      if (!response.ok) {
-        throw new Error('送信に失敗しました');
+      // 音声再生
+      if (data.audioData) {
+        this.audioCtx = ensureAudioContext(this.audioCtx);
+        await AudioUtils.playAudio(data.audioData, this.audioCtx, 3.0);
       }
 
-      const data = await response.json();
-      console.log(data.audio);
-
-      if (data.audio?.data) {
-        // Base64 -> Blob に変換
-        const audioBlob = base64ToBlob(data.audio.data, 'audio/mpeg');
-
-        // 音量ブーストして再生（Web Audio API）
-        const ctx = this.ensureAudioContext();
-        const arrayBuf = await audioBlob.arrayBuffer();
-        const buffer = await ctx.decodeAudioData(arrayBuf);
-        const source = ctx.createBufferSource();
-        source.buffer = buffer;
-        const gainNode = ctx.createGain();
-        gainNode.gain.value = 3.0; // 1.0=等倍, 2.0=約2倍（上げすぎ注意）
-        source.connect(gainNode).connect(ctx.destination);
-        source.start(0);
-        // 終了時の後処理
-        source.onended = () => {
-          try { source.disconnect(); gainNode.disconnect(); } catch { }
-        };
-      }
-
-      // if (this.onSuccess) this.onSuccess(data.answer, data.video_url, data.video_start,data.audio.length); // ← ここで main に渡す
+      // 結果を返す
       return {
         answer: data.answer,
-        video_url: data.video_url,
-        video_start: data.video_start,
-        voice_length: data.audio.length,
-        fel_id2: data.feeling_id
+        video_url: data.videoUrl,
+        video_start: data.videoStart,
+        voice_length: data.voiceLength,
+        fel_id2: data.feelingId,
       };
-  } catch(error) {
-    console.error('エラーが発生しました:', error);
+    } catch (error) {
+      console.error('送信エラー:', error);
+      throw error;
+    }
   }
-}
-}
 
-// ここにユーティリティを追加
-function base64ToBlob(base64, mimeType) {
-  // 先頭に data:...;base64, が付いていたら取り除く
-  const cleaned = base64.includes(',') ? base64.split(',').pop() : base64;
-  const bin = atob(cleaned);
-  const len = bin.length;
-  const bytes = new Uint8Array(len);
-  for (let i = 0; i < len; i++) bytes[i] = bin.charCodeAt(i);
-  return new Blob([bytes], { type: mimeType });
+  /**
+   * テキストボックスから値を取得（互換性維持）
+   * @returns {string}
+   */
+  getTextBoxValue() {
+    if (typeof this.textBox.getValue === 'function') {
+      return this.textBox.getValue();
+    }
+    if (this.textBox.getTextarea) {
+      return this.textBox.getTextarea()?.value || '';
+    }
+    return '';
+  }
 }

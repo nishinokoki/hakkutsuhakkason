@@ -1,0 +1,125 @@
+/* コンポーネント固有のスタイル */
+
+/* TextBoxComponent */
+.text-box-component textarea {
+  width: 100%;
+  box-sizing: border-box;
+  padding: 12px;
+  min-height: 70px;
+  font-size: 1rem;
+  line-height: 1.5;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+}
+
+/* AnswerBoxComponent */
+.answer-box-component textarea {
+  min-height: 12px; 
+  box-sizing: border-box;
+  padding: 12px;
+  font-size: 1rem;
+  line-height: 1.5;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  background: #969593; 
+  color: #000000;
+  resize: vertical;
+} 
+
+.answer-box-component[readonly] {
+  cursor: default;
+}
+
+/* QuestionSelectorComponent */
+select#question-select {
+  position: absolute;
+  width: 100%;
+  bottom: 0px;
+  left: 20px;
+  max-width: 500px;
+  padding: 8px;
+  margin-bottom: 20px;
+  border-radius: 4px;
+  border: 1px solid #5c5858;
+  font-size: 1rem;
+}
+
+select#question-select:focus {
+  outline: none;
+  border-color: #646cff;
+}
+
+/* CharacterMoveComponent */
+.character-image {
+  position: absolute;
+  left: 20px;
+  top: 20px;
+  pointer-events: auto;
+  will-change: transform;
+  cursor: pointer;
+  transition: box-shadow 0.3s ease, filter 0.3s ease;
+}
+
+/* MovieComponent */
+#assist-video {
+  position: fixed;
+  right: 170px;
+  bottom: 355px;
+  width: 500px;
+  height: 250px;
+  border: 2px solid #ccc; 
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  z-index: 10001;
+}
+
+/* LoadingIndicator */
+#loading-indicator {
+  position: fixed;
+  left: 170px;
+  bottom: 310px;
+  background: rgba(255, 255, 255, 0.95);
+  color: #333;
+  padding: 15px 25px;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+  font-size: 1.1rem;
+  z-index: 10002;
+  display: none;
+  align-items: center;
+  gap: 10px;
+}
+
+#loading-indicator.show {
+  display: flex;
+}
+
+.loading-spinner {
+  width: 20px;
+  height: 20px;
+  border: 3px solid #f3f3f3;
+  border-top: 3px solid #646cff;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+/* SendButton */
+#send-button {
+  position: fixed;
+  right: 20px; 
+  border-radius: 8px;
+  border: 1px solid transparent;
+  bottom: 14px;
+  padding: 8px;
+  width: 80px;
+  font-size: 1em;
+  background-color: #1a1a1a;
+  color: #fff;
+  cursor: pointer;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
